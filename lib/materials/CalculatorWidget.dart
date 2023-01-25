@@ -11,7 +11,7 @@ class _CalculatorState extends State<CalculatorWidget> {
   int _val2 = 0;
   String _operator = "";
   bool _done = false;
-  double _spacing = 10;
+  double _spacing = 20;
   @override
   Widget build(BuildContext context) {
     return Padding(
