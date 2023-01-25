@@ -7,11 +7,12 @@ class CalculatorWidget extends StatefulWidget {
 
 class _CalculatorState extends State<CalculatorWidget> {
   String _currentOperation = "";
-  int _val1 = 0;
-  int _val2 = 0;
+  var _val1;
+  var _val2;
   String _operator = "";
   bool _done = false;
   double _spacing = 20;
+  var _result;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,9 +23,12 @@ class _CalculatorState extends State<CalculatorWidget> {
             alignment: Alignment.center,
             child: Padding(
               padding: const EdgeInsets.all(25.0),
-              child: Text(
-                _currentOperation,
-                style: TextStyle(fontSize: 40),
+              child: FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  _currentOperation,
+                  style: TextStyle(fontSize: 40),
+                ),
               ),
             ),
           ),
@@ -278,8 +282,13 @@ class _CalculatorState extends State<CalculatorWidget> {
 
   void _setOperator(String op) {
     setState(() {
-      if (_operator == "") {
+      if (_operator == "" || _done) {
         _operator = op;
+        if (_done) {
+          _val1 = _result;
+          _currentOperation = _val1.toString();
+          _done = false;
+        }
         _currentOperation += op;
       }
     });
@@ -296,22 +305,23 @@ class _CalculatorState extends State<CalculatorWidget> {
 
   void _calculate() {
     setState(() {
-      if (_operator != "") {
+      if (_operator != "" && !_done) {
         _currentOperation += "=";
         switch (_operator) {
           case "+":
-            _currentOperation += (_val1 + _val2).toString();
+            _result = (_val1 + _val2);
             break;
           case "-":
-            _currentOperation += (_val1 - _val2).toString();
+            _result = (_val1 - _val2);
             break;
           case "*":
-            _currentOperation += (_val1 * _val2).toString();
+            _result = (_val1 * _val2);
             break;
           case "/":
-            _currentOperation += (_val1 / _val2).toString();
+            _result = (_val1 / _val2);
             break;
         }
+        _currentOperation += _result.toString();
         _done = true;
       }
     });
